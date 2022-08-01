@@ -1,29 +1,48 @@
+// Crea string con menu de categorias
+function printCategorys(categorysArray){
+    let categorysList =""
+    let i = 1
+    while(i <= categorysArray.length){
+        categorysList = categorysList + i + " " + categorysArray[i-1].name + "\n"
+        i++
+    }
+    categorysList= categorysList + i + " Si desea salir"
+    return categorysList
+}
+
+// crea string con menu de productos
+function printProducts(productsArray){
+    let productsList=""
+    let i = 1
+    while (i <= productsArray.length){
+        productsList = productsList + i + " " + productsArray[i-1].name + " $"+ productsArray[i-1].cost + "\n"
+        i++
+    }
+    productsList= productsList + i + " Si desea volver a categorias"
+    return productsList
+}
+
 // Se ingresa categoria y se retorna 1, 2, 3 o 4 
-function categorys(){
-    let category;
-    category = parseInt(prompt("Ingrese una categoria" + "\n" +" 1- vasos"+ "\n" +" 2- remeras"+ "\n" +" 3- gorras" + "\n" + "4- Si desea salir del simulador"))
-    while (category != 1 && category != 2 && category != 3 && category != 4){
-        category = prompt("No ha ingresado correctamente ingrese categoria o 4 si desea salir del simulador:" + "\n" +" 1- vasos"+ "\n" +" 2- remeras"+ "\n" +" 3- gorras" + "\n" + " 4- Si desea salir")
+function categorys(categorysArray){
+    let category = parseInt(prompt("Ingrese una categoria" + "\n" + printCategorys(categorysArray)))
+    while ((category > categorysArray.length +1) || (category <= 0) || (isNaN(category))){
+        category = parseInt(prompt("No ha ingresado correctamente ingrese " +"\n" +  printCategorys(categorysArray)))
     }
     return category
 }
 
 // Funcion que recibe de parametros la categoria ingresada, la opcion 1 de producto, la opcion 2 de del producto y sus precios respectivos. La funcion retorna la funcion showCost() o menu() en caso de que haya elegido opcion 3
-function categoryToEnter(type, option1, option2, option1cost, option2cost){
-    let object;
+function categoryToEnter(productsOfCategorySelected){
     let cost;
     let amount; 
-    object = prompt("Ingrese "+ type +" que desea comprar" + "\n" +" 1- "+option1+ "  $"+ option1cost+ "\n" +" 2- "+option2 +"  $"+ option2cost+ "\n" + "3- volver a categorias")
-    while(object != "1" && object != "2" && object != "3"){
-        object = prompt("No ha ingresado correctamente, Ingrese "+ type +" que desea comprar" + "\n" +" 1- "+option1+"  $"+ option1cost+ "\n" +" 2- "+option2 +"  $"+ option2cost+ "\n" + "3- volver a categorias")
+    let product = parseInt(prompt("Ingrese "+ productsOfCategorySelected[0].category +" que desea comprar" + "\n" +printProducts(productsOfCategorySelected)))
+    while((product > productsOfCategorySelected.length +1) || (product <= 0) || (isNaN(product))){
+        product = parseInt(prompt("No ha ingresado correctamente, Ingrese "+ productsOfCategorySelected[0].category +" que desea comprar" + "\n" +printProducts(productsOfCategorySelected)))
     }
-    if (object == "1" || object == "2" ){
-       amount = quantity()
-        if (object == "1"){
-            cost = amount * option1cost
-        }else if (object == "2"){
-            cost = amount * option2cost
-        }
+    if (product < productsOfCategorySelected.length +1){
+        console.log("entro al if")
+        amount = quantity()
+        cost = amount * productsOfCategorySelected[product-1].cost
         showCost(cost)
     }
 }
@@ -48,38 +67,51 @@ function showCost(cost){
 }
 
 // Menu principal
-function menu(){
-    let category = categorys()
+function menu(categorysArray, productsArray){
+    let category = categorys(categorysArray)
     while (category != 4){
-        let type
-        let option1
-        let option1cost
-        let option2
-        let option2cost
+        let productsOfCategorySelected = []
         if (category == 1){
-            type = "vaso"
-            option1 = "vaso termico"
-            option1cost = 10
-            option2 = "vaso plastico"
-            option2cost = 5
+            for (product of productsArray){
+                if (product.category == "Vasos"){
+                    // se cargan todos los productos cuya categoria sea vasos
+                    productsOfCategorySelected.push(product)
+                }
+            }
         } else if (category == 2){
-            type = "remera"
-            option1 = "remera estampada"
-            option1cost = 20
-            option2 = "remera basica"
-            option2cost = 10
+            for (product of productsArray){
+                if (product.category == "Remeras"){
+                    // se cargan todos los productos cuya categoria sea remeras
+                    productsOfCategorySelected.push(product)
+                }
+            }
         }else if (category == 3){
-            type = "gorra"
-            option1 = "gorra estampada"
-            option1cost = 15
-            option2 = "gorra basica"
-            option2cost = 8
+            for (product of productsArray){
+                if (product.category == "Gorras"){
+                    // se cargan todos los productos cuya categoria sea gorras
+                    productsOfCategorySelected.push(product)
+                }
+            }
         }
-        categoryToEnter(type, option1, option2, option1cost, option2cost)
-        category = categorys()
+        categoryToEnter(productsOfCategorySelected)
+        category = categorys(categorysArray)
     }
    
     
 }
+// se carga categorias en arreglo
+const categorysArray = []
+categorysArray.push(new Category("Vasos"))
+categorysArray.push(new Category("Remeras"))
+categorysArray.push(new Category("Gorras"))
 
-menu()
+// se carga productos en arreglo
+const productsArray = []
+productsArray.push(new Product("Vaso termico", "10", "Vasos"))
+productsArray.push(new Product("Vaso plastico", "8", "Vasos"))
+productsArray.push(new Product("Remera basica", "15", "Remeras"))
+productsArray.push(new Product("Remera estampada", "20", "Remeras"))
+productsArray.push(new Product("Gorra basica", "8", "Gorras"))
+productsArray.push(new Product("Gorra estampada", "12", "Gorras"))
+
+menu(categorysArray, productsArray)
