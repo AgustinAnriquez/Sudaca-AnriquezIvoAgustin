@@ -70,28 +70,13 @@ function showCost(cost){
 function menu(categorysArray, productsArray){
     let category = categorys(categorysArray)
     while (category != 4){
-        let productsOfCategorySelected = []
+        let productsOfCategorySelected
         if (category == 1){
-            for (product of productsArray){
-                if (product.category == "Vasos"){
-                    // se cargan todos los productos cuya categoria sea vasos
-                    productsOfCategorySelected.push(product)
-                }
-            }
+            productsOfCategorySelected = productsArray.filter((el) => el.category == "Vasos")
         } else if (category == 2){
-            for (product of productsArray){
-                if (product.category == "Remeras"){
-                    // se cargan todos los productos cuya categoria sea remeras
-                    productsOfCategorySelected.push(product)
-                }
-            }
+            productsOfCategorySelected = productsArray.filter((el) => el.category == "Remeras")
         }else if (category == 3){
-            for (product of productsArray){
-                if (product.category == "Gorras"){
-                    // se cargan todos los productos cuya categoria sea gorras
-                    productsOfCategorySelected.push(product)
-                }
-            }
+            productsOfCategorySelected = productsArray.filter((el) => el.category == "Gorras")
         }
         categoryToEnter(productsOfCategorySelected)
         category = categorys(categorysArray)
