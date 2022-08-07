@@ -1,3 +1,7 @@
+const buysArray = []
+let buyAlert = document.getElementById("buyAlert")
+let productsBuyList = document.getElementById("productsBuyList")
+
 // Crea string con menu de categorias
 function printCategorys(categorysArray){
     let categorysList =""
@@ -43,7 +47,8 @@ function categoryToEnter(productsOfCategorySelected){
         console.log("entro al if")
         amount = quantity()
         cost = amount * productsOfCategorySelected[product-1].cost
-        showCost(cost)
+        product = productsOfCategorySelected[product]
+        showCost(cost, product)
     }
 }
 
@@ -59,10 +64,11 @@ function quantity(){
 }
 
 // confirm() que permite aceptar compra o rechazar
-function showCost(cost){
+function showCost(cost, product){
     buy = confirm("El precio de la compra es $"+ cost + " Desea comprar?")
     if (buy){
         alert("compra exitosa")
+        buysArray.push(product)
     }
 }
 
@@ -100,3 +106,17 @@ productsArray.push(new Product("Gorra basica", "8", "Gorras"))
 productsArray.push(new Product("Gorra estampada", "12", "Gorras"))
 
 menu(categorysArray, productsArray)
+if (buysArray.length >= 1){
+    buyAlert.textContent = "Has comprado los siguientes articulos: ";
+    for (product of buysArray){
+        ItemNew(product.name, product.cost)
+    }
+}else{
+    buyAlert.textContent = "No has comprado articulos";
+}
+
+function ItemNew(productName, productCost){
+    let  li = document.createElement("li");
+    li.textContent = productName + " $" + productCost;
+    productsBuyList.appendChild(li)
+}
