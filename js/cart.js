@@ -1,102 +1,72 @@
-// Crea string con menu de categorias
-function printCategorys(categorysArray){
-    let categorysList =""
-    let i = 1
-    while(i <= categorysArray.length){
-        categorysList = categorysList + i + " " + categorysArray[i-1].name + "\n"
-        i++
-    }
-    categorysList= categorysList + i + " Si desea salir"
-    return categorysList
-}
-
-// crea string con menu de productos
-function printProducts(productsArray){
-    let productsList=""
-    let i = 1
-    while (i <= productsArray.length){
-        productsList = productsList + i + " " + productsArray[i-1].name + " $"+ productsArray[i-1].cost + "\n"
-        i++
-    }
-    productsList= productsList + i + " Si desea volver a categorias"
-    return productsList
-}
-
-// Se ingresa categoria y se retorna 1, 2, 3 o 4 
-function categorys(categorysArray){
-    let category = parseInt(prompt("Ingrese una categoria" + "\n" + printCategorys(categorysArray)))
-    while ((category > categorysArray.length +1) || (category <= 0) || (isNaN(category))){
-        category = parseInt(prompt("No ha ingresado correctamente ingrese " +"\n" +  printCategorys(categorysArray)))
-    }
-    return category
-}
-
-// Funcion que recibe de parametros la categoria ingresada, la opcion 1 de producto, la opcion 2 de del producto y sus precios respectivos. La funcion retorna la funcion showCost() o menu() en caso de que haya elegido opcion 3
-function categoryToEnter(productsOfCategorySelected){
-    let cost;
-    let amount; 
-    let product = parseInt(prompt("Ingrese "+ productsOfCategorySelected[0].category +" que desea comprar" + "\n" +printProducts(productsOfCategorySelected)))
-    while((product > productsOfCategorySelected.length +1) || (product <= 0) || (isNaN(product))){
-        product = parseInt(prompt("No ha ingresado correctamente, Ingrese "+ productsOfCategorySelected[0].category +" que desea comprar" + "\n" +printProducts(productsOfCategorySelected)))
-    }
-    if (product < productsOfCategorySelected.length +1){
-        console.log("entro al if")
-        amount = quantity()
-        cost = amount * productsOfCategorySelected[product-1].cost
-        showCost(cost)
-    }
-}
-
-// Funcion que solicita el ingreso de cantidad a comprar del producto
-function quantity(){
-    let amount
-    amount = parseInt(prompt("Ingrese cantidad que desea comprar") )
-    while (isNaN(amount)){
-        amount = parseInt(prompt("No ha ingresado cantidad, por favor ingrese cantidad que desee comprar") )
-    }
-    return amount
-    
-}
-
-// confirm() que permite aceptar compra o rechazar
-function showCost(cost){
-    buy = confirm("El precio de la compra es $"+ cost + " Desea comprar?")
-    if (buy){
-        alert("compra exitosa")
-    }
-}
-
-// Menu principal
-function menu(categorysArray, productsArray){
-    let category = categorys(categorysArray)
-    while (category != 4){
-        let productsOfCategorySelected
-        if (category == 1){
-            productsOfCategorySelected = productsArray.filter((el) => el.category == "Vasos")
-        } else if (category == 2){
-            productsOfCategorySelected = productsArray.filter((el) => el.category == "Remeras")
-        }else if (category == 3){
-            productsOfCategorySelected = productsArray.filter((el) => el.category == "Gorras")
+function createProductCard(product){
+    const containerProduct = document.createElement("div")
+    const title = document.createElement("h3")
+    const img = document.createElement("img")
+    const cost = document.createElement("p")
+    title.textContent = product.name
+    cost.textContent = "Precio: $"+ product.cost
+    img.setAttribute("src", product.image)
+    containerProduct.appendChild(title)
+    containerProduct.appendChild(img)
+    containerProduct.appendChild(cost)
+    productsList.appendChild(containerProduct)
+    containerProduct.onclick = function(){
+        if (confirmMessage(product)){
+            newItem(product)
+            totalCost = totalCost + product.cost
+            buyProducts.textContent = "Costo total: $" + totalCost
         }
-        categoryToEnter(productsOfCategorySelected)
-        category = categorys(categorysArray)
     }
-   
-    
 }
-// se carga categorias en arreglo
+
+function confirmMessage(product){
+    return confirm("Desea agregar al carrito " + product.name + "?")
+}
+
+function newItem(product){
+    const li = document.createElement("li")
+    const span = document.createElement("span")
+    span.textContent = product.name + " $" + product.cost + " "
+    const buttonRemove = document.createElement("button")
+    buttonRemove.classList.add("btn", "btn-danger")
+    buttonRemove.textContent = "Quitar"
+    li.appendChild(span)
+    li.appendChild(buttonRemove)
+    productsBuyList.appendChild(li)
+    buttonRemove.onclick = function(){
+        totalCost = totalCost - product.cost 
+        productsBuyList.removeChild(li)
+        if (totalCost > 0){
+            buyProducts.textContent = "Costo total: $" + totalCost
+        }else{
+            buyProducts.textContent ="No hay productos en el carrito" 
+        }
+    }
+}
+
+const buysArray = []
+const buyProducts = document.getElementById("buyProducts")
+const productsBuyList = document.getElementById("productsBuyList")
+const productsList = document.getElementById("productsList")
+let totalCost = 0
+
 const categorysArray = []
 categorysArray.push(new Category("Vasos"))
-categorysArray.push(new Category("Remeras"))
-categorysArray.push(new Category("Gorras"))
+categorysArray.push(new Category("Boligrafos"))
+categorysArray.push(new Category("Botellas"))
+categorysArray.push(new Category("Llaveros"))
+categorysArray.push(new Category("Escritorio"))
 
-// se carga productos en arreglo
 const productsArray = []
-productsArray.push(new Product("Vaso termico", "10", "Vasos"))
-productsArray.push(new Product("Vaso plastico", "8", "Vasos"))
-productsArray.push(new Product("Remera basica", "15", "Remeras"))
-productsArray.push(new Product("Remera estampada", "20", "Remeras"))
-productsArray.push(new Product("Gorra basica", "8", "Gorras"))
-productsArray.push(new Product("Gorra estampada", "12", "Gorras"))
+productsArray.push(new Product("Vaso termico", "10", "Vasos", "/img/vasoTermico.png"))
+productsArray.push(new Product("Anotador", "8", "Escritorio", "/img/anotador.png"))
+productsArray.push(new Product("Boligrafo", "4", "Boligrafos", "/img/boligrafo.jpg"))
+productsArray.push(new Product("Llavero", "2", "Llaveros", "/img/llavero.png"))
+productsArray.push(new Product("Botella plastica", "10", "Botellas", "/img/botellaPlastica.png"))
 
-menu(categorysArray, productsArray)
+
+for (product of productsArray){
+    createProductCard(product)
+}
+
+
