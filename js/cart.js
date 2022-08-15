@@ -33,6 +33,8 @@ function newItem(product){
     li.appendChild(span)
     li.appendChild(buttonRemove)
     productsBuyList.appendChild(li)
+    productJson = JSON.stringify(product)
+    localStorage.setItem("producto1", productJson)
     buttonRemove.onclick = function(){
         totalCost = totalCost - product.cost 
         productsBuyList.removeChild(li)
@@ -44,11 +46,30 @@ function newItem(product){
     }
 }
 
-const buysArray = []
+function addItemInCart(product){
+    const productFlag = productsInCart.some(productInCart => productInCart.id == product.id)
+    if(productFlag){
+        const newProductsInCart = productsInCart.map(
+            productInCart =>{
+                if (productInCart == product.id){
+                    productInCart.quantity++
+                    return productInCart
+                }else{
+                    return productInCart
+                }
+            }
+        )
+        productsInCart = newProductsInCart
+    }
+}
+
 const buyProducts = document.getElementById("buyProducts")
 const productsBuyList = document.getElementById("productsBuyList")
 const productsList = document.getElementById("productsList")
+
 let totalCost = 0
+
+let productsInCart = []
 
 const categorysArray = []
 categorysArray.push(new Category("Vasos"))
@@ -58,11 +79,11 @@ categorysArray.push(new Category("Llaveros"))
 categorysArray.push(new Category("Escritorio"))
 
 const productsArray = []
-productsArray.push(new Product("Vaso termico", "10", "Vasos", "/img/vasoTermico.png"))
-productsArray.push(new Product("Anotador", "8", "Escritorio", "/img/anotador.png"))
-productsArray.push(new Product("Boligrafo", "4", "Boligrafos", "/img/boligrafo.jpg"))
-productsArray.push(new Product("Llavero", "2", "Llaveros", "/img/llavero.png"))
-productsArray.push(new Product("Botella plastica", "10", "Botellas", "/img/botellaPlastica.png"))
+productsArray.push(new Product(1, "Vaso termico", "10", "Vasos", "/img/vasoTermico.png"))
+productsArray.push(new Product(2, "Anotador", "8", "Escritorio", "/img/anotador.png"))
+productsArray.push(new Product(3, "Boligrafo", "4", "Boligrafos", "/img/boligrafo.jpg"))
+productsArray.push(new Product(4, "Llavero", "2", "Llaveros", "/img/llavero.png"))
+productsArray.push(new Product(5, "Botella plastica", "10", "Botellas", "/img/botellaPlastica.png"))
 
 
 for (product of productsArray){
