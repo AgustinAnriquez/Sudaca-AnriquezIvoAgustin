@@ -27,11 +27,7 @@ function createProductCard(product){
 // Se modifica costo total del carrito
 function modifyTotalCost(productCost){
     totalCost = totalCost + productCost
-    if (totalCost > 0){
-            buyProducts.textContent = "Costo total: $" + totalCost
-    }else{
-            buyProducts.textContent ="No hay productos en el carrito" 
-    }
+    totalCost > 0 ? buyProducts.textContent = "Costo total: $" + totalCost : buyProducts.textContent ="No hay productos en el carrito" 
 }
 
 // Mensaje para confirmar adhesion de producto al carrito
@@ -57,9 +53,7 @@ function newItem(product){
         // Se modifica costo total del carrito, se envia costo en negativo, debido que se elimino el producto del carrito
         modifyTotalCost(-(product.cost))
         // Si se elimino la totalidad del mismo producto, se lo elimina de la lista
-        if(deleteProductOfCart(product)){
-            productsBuyList.removeChild(li)
-        }
+        deleteProductOfCart(product) && productsBuyList.removeChild(li)
     }
 }
 
