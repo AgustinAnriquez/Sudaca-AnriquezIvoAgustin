@@ -1,25 +1,28 @@
+// Funciones
+
 // Funcion creadora de nuevas tarjetas de productos
 function createProductCard(product){
     //Se crea elementos a utilizar para crear la tarjeta
     const containerProduct = document.createElement("div")
     const title = document.createElement("h3")
     const img = document.createElement("img")
-    const cost = document.createElement("p")
+    const costProduct = document.createElement("p")
+    const{name, cost, image} = product
     // Se rellenan elementos de la tarjeta
-    title.textContent = product.name
-    cost.textContent = "Precio: $"+ product.cost
-    img.setAttribute("src", product.image)
+    title.textContent = name
+    costProduct.textContent = "Precio: $"+ cost
+    img.setAttribute("src", image)
     containerProduct.appendChild(title)
     containerProduct.appendChild(img)
-    containerProduct.appendChild(cost)
+    containerProduct.appendChild(costProduct)
     productsList.appendChild(containerProduct)
     // Se agrega evento a cada tarjeta, por cada click a la tarjeta, se consultara si se desea agregar al carrito el producto
     containerProduct.onclick = function(){
         // En caso de confirmar la adhesion del producto al carrito se añade el producto al carrito(o se modifica cantidad del mismo), se modifica localStorage y se modifica costo total del carrito
-        if (confirmMessage(product)){
+        if (confirmMessage(name)){
             addItemInCart(product)
             saveCart()
-            modifyTotalCost(product.cost)
+            modifyTotalCost(cost)
         }
     }
 }
@@ -31,8 +34,8 @@ function modifyTotalCost(productCost){
 }
 
 // Mensaje para confirmar adhesion de producto al carrito
-function confirmMessage(product){
-    return confirm("Desea agregar al carrito " + product.name + "?")
+function confirmMessage(ProductName){
+    return confirm("Desea agregar al carrito " + ProductName + "?")
 }
 
 // Creacion de nuevo elemento en la lista de producto en el carrito
@@ -128,6 +131,9 @@ function deleteProductOfCart(product){
    return productRemoveFlag
 }
 
+
+// Variables globales
+
 // Se crea variables con elementos del dom que se los modificara mas adelante
 const buyProducts = document.getElementById("buyProducts")
 const productsBuyList = document.getElementById("productsBuyList")
@@ -154,6 +160,9 @@ productsArray.push(new Product(2, "Anotador", "8", "Escritorio", "/img/anotador.
 productsArray.push(new Product(3, "Boligrafo", "4", "Boligrafos", "/img/boligrafo.jpg"))
 productsArray.push(new Product(4, "Llavero", "2", "Llaveros", "/img/llavero.png"))
 productsArray.push(new Product(5, "Botella plastica", "10", "Botellas", "/img/botellaPlastica.png"))
+
+
+//Main
 
 // Se agrega evento para que cada vez que se actualice la pagina se rellene arreglo del carrito con lo guardado en el localStorage 
 document.addEventListener('DOMContentLoaded', ()=>{
