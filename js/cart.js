@@ -19,11 +19,8 @@ function createProductCard(product){
     // Se agrega evento a cada tarjeta, por cada click a la tarjeta, se consultara si se desea agregar al carrito el producto
     containerProduct.onclick = function(){
         // En caso de confirmar la adhesion del producto al carrito se añade el producto al carrito(o se modifica cantidad del mismo), se modifica localStorage y se modifica costo total del carrito
-        if (confirmMessage(name)){
-            addItemInCart(product)
-            saveCart()
-            modifyTotalCost(cost)
-        }
+        confirmMessage(name, product, cost)
+            
     }
 }
 
@@ -34,8 +31,23 @@ function modifyTotalCost(productCost){
 }
 
 // Mensaje para confirmar adhesion de producto al carrito
-function confirmMessage(ProductName){
-    return confirm("Desea agregar al carrito " + ProductName + "?")
+function confirmMessage(ProductName, product, cost){
+    Swal.fire({
+        title: `Desea añadir ${ProductName} al carrito ?`,
+        showCancelButton: true,
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, añadirlo',
+        cancelButtonText: `Cancelar`,
+      }).then((result) => {
+        
+        if (result.isConfirmed) 
+        {
+            addItemInCart(product)
+            saveCart()
+            modifyTotalCost(cost)
+        }          
+      }) 
+      return addFlag
 }
 
 // Creacion de nuevo elemento en la lista de producto en el carrito
@@ -57,6 +69,16 @@ function newItem(product){
         modifyTotalCost(-(product.cost))
         // Si se elimino la totalidad del mismo producto, se lo elimina de la lista
         deleteProductOfCart(product) && productsBuyList.removeChild(li)
+        Toastify({
+
+            text: "Se ha eliminado producto del carrito",
+            className: "info",
+            duration: 3000,
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+              }
+            
+            }).showToast();
     }
 }
 
@@ -160,7 +182,7 @@ productsArray.push(new Product(2, "Anotador", "8", "Escritorio", "/img/anotador.
 productsArray.push(new Product(3, "Boligrafo", "4", "Boligrafos", "/img/boligrafo.jpg"))
 productsArray.push(new Product(4, "Llavero", "2", "Llaveros", "/img/llavero.png"))
 productsArray.push(new Product(5, "Botella plastica", "10", "Botellas", "/img/botellaPlastica.png"))
-
+let addFlag
 
 //Main
 
