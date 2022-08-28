@@ -47,7 +47,6 @@ function confirmMessage(ProductName, product, cost){
             modifyTotalCost(cost)
         }          
       }) 
-      return addFlag
 }
 
 // Creacion de nuevo elemento en la lista de producto en el carrito
@@ -153,6 +152,14 @@ function deleteProductOfCart(product){
    return productRemoveFlag
 }
 
+const intializeProducts = async () =>{
+    const resp = await fetch(urlJson)
+    const data = await resp.json()
+    for (product of data){
+        createProductCard(product)
+    }
+    
+}
 
 // Variables globales
 
@@ -160,6 +167,9 @@ function deleteProductOfCart(product){
 const buyProducts = document.getElementById("buyProducts")
 const productsBuyList = document.getElementById("productsBuyList")
 const productsList = document.getElementById("productsList")
+
+//url con path relativo al json, donde se encuentran cargados todos los productos
+const urlJson = './js/db.json'
 
 // Se inicializa acumulador de carrito
 let totalCost = 0
@@ -175,14 +185,8 @@ categorysArray.push(new Category("Botellas"))
 categorysArray.push(new Category("Llaveros"))
 categorysArray.push(new Category("Escritorio"))
 
-// Se inicializa y se llena arreglo con los productos disponibles 
-const productsArray = []
-productsArray.push(new Product(1, "Vaso termico", "10", "Vasos", "/img/vasoTermico.png"))
-productsArray.push(new Product(2, "Anotador", "8", "Escritorio", "/img/anotador.png"))
-productsArray.push(new Product(3, "Boligrafo", "4", "Boligrafos", "/img/boligrafo.jpg"))
-productsArray.push(new Product(4, "Llavero", "2", "Llaveros", "/img/llavero.png"))
-productsArray.push(new Product(5, "Botella plastica", "10", "Botellas", "/img/botellaPlastica.png"))
-let addFlag
+// Se inicializa pagina creando tarjetas para cada producto obtenido del json 
+intializeProducts()
 
 //Main
 
@@ -197,9 +201,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
 })
 
-// por cada producto de arreglo con productos disponibles se crea nueva tarjeta
-for (product of productsArray){
-    createProductCard(product)
-}
+
 
 
