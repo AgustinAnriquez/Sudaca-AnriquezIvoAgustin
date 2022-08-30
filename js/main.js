@@ -50,7 +50,7 @@ function confirmMessage(ProductName, product, cost){
 }
 
 // Creacion de nuevo elemento en la lista de producto en el carrito
-function newItem(product){
+function newItemInCart(product){
     // Se crea elemento con su nombre, costo por unidad y cantidad seleccionada
     const li = document.createElement("li")
     const span = document.createElement("span")
@@ -105,7 +105,7 @@ function addItemInCart(product){
     // En caso de que el producto no se encuentre en el carrito, se lo añade al arreglo y se añade nuevo elemento al DOM
     else{
         productsInCart.push(product)
-        newItem(product)
+        newItemInCart(product)
     }
 }
 
@@ -152,30 +152,60 @@ function deleteProductOfCart(product){
    return productRemoveFlag
 }
 
-const intializeProducts = async () =>{
+// Funcion inicializadora de productos disponibles
+const initializeProducts = async () =>{
     const resp = await fetch(urlJson)
-    const data = await resp.json()
-    for (product of data){
-        createProductCard(product)
-    }
-    
+    let data = await resp.json()
+    productsArray = data
 }
 
+//Funcion que crea tarjetas para productos destacados y los muestra
+const viewFeaturedProducts = async () =>{
+    await initializeProducts()
+    productsList.innerHTML = ''
+    productsListTitle.textContent = "Productos Destacados"
+    const featuredProducts = productsArray.filter((product) => product.featured == "S")
+    for (product of featuredProducts){
+        createProductCard(product)
+    }
+}
+
+//Funcion para filtrar elementos con buscador
+const productsSearchFilter = async () =>{
+    await initializeProducts()
+    productsList.innerHTML = ''
+    const productsSearchText = productsSearch.value.toLowerCase()
+    for(let product of productsArray){
+        let name = product.name.toLowerCase()
+        if(name.indexOf(productsSearchText) !== -1 ){
+            productsListTitle.textContent = "Resultados de la busqueda"
+            createProductCard(product)
+        }
+    }
+    if (productsList.innerHTML == ''){
+        productsListTitle.textContent = "No se encontro nada"
+    }
+
+}
 // Variables globales
 
+// Arreglo en el que se guardaran todos los productos disponibles, luego de recorrer json
+let productsArray
+
 // Se crea variables con elementos del dom que se los modificara mas adelante
+
 const buyProducts = document.getElementById("buyProducts")
 const productsBuyList = document.getElementById("productsBuyList")
 const productsList = document.getElementById("productsList")
+const productsSearch = document.getElementById("ProductsSearch")
+const productsSearchBtn = document.getElementById("ProductsSearchBtn")
+const productsListTitle = document.getElementById("productsListTitle")
 
 //url con path relativo al json, donde se encuentran cargados todos los productos
 const urlJson = './js/db.json'
 
 // Se inicializa acumulador de carrito
 let totalCost = 0
-
-// Se inicializa arreglo que va guardando los productos del carrito
-let productsInCart = []
 
 // Se inicializa y se llena arreglo con las categorias disponibles 
 const categorysArray = []
@@ -185,22 +215,26 @@ categorysArray.push(new Category("Botellas"))
 categorysArray.push(new Category("Llaveros"))
 categorysArray.push(new Category("Escritorio"))
 
-// Se inicializa pagina creando tarjetas para cada producto obtenido del json 
-intializeProducts()
-
 //Main
+
+// Se muestran productos destacados
+viewFeaturedProducts()
 
 // Se agrega evento para que cada vez que se actualice la pagina se rellene arreglo del carrito con lo guardado en el localStorage 
 document.addEventListener('DOMContentLoaded', ()=>{
     productsInCart = JSON.parse(localStorage.getItem('cart')) || []
     for (product of productsInCart){
         // por cada producto en el carrito se crea nuevo elemento en la lista
-        newItem(product)
+        newItemInCart(product)
         // se modifica costo total de carrito en base a los productos cargados en el localStorage y la cantidad de los mismos
         modifyTotalCost(product.cost * product.quantity)
     }
 })
 
-
-
+productsSearchBtn.addEventListener('click', productsSearchFilter)
+productsSearch.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        productsSearchFilter()
+    }
+});
 
