@@ -1,13 +1,11 @@
 class Product{
-    constructor(id, name, cost, category, image){
-        this.id = id
-        this.name = name.toLowerCase();
-        this.cost = parseFloat(cost);
-        this.category = category;
-        this.image = image
-        this.quantity = 1
-    }
-    iva(){
-        this.cost = this.cost * 1.21
-    }
+    constructor(data){
+        this.id = data.id
+        this.name = data.name.toLowerCase();
+        this.cost = parseFloat(data.cost);
+        this.category = data.category;
+        this.image = data.image
+        this.quantity = data.quantity
+        this.featured = data.featured
+    }  
 }

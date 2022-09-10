@@ -156,7 +156,9 @@ function deleteProductOfCart(product){
 const initializeProducts = async () =>{
     const resp = await fetch(urlJson)
     let data = await resp.json()
-    productsArray = data
+    productsArray = data.map(product => new Product(product));
+    console.log(productsArray)
+    console.log(data)
 }
 
 //Funcion que crea tarjetas para productos destacados y los muestra
