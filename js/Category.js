@@ -1,5 +1,6 @@
 class Category{
-    constructor(name){
-        this.name = name.toLowerCase();
+    constructor(data){
+        this.id = data.id;
+        this.name = data.name;
     }
 }

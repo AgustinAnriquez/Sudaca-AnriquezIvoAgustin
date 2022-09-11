@@ -5,12 +5,19 @@
     box-sizing: border-box;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-ul{
+ul, h3{
     margin:0;
+    padding: 0;
 }
 
 /* HEADER */
+#body{
+    display: grid;
+    grid-template-columns: 25% 75%;
+    background-color: #BBBBBB;
+}
 .header{
+    grid-column: 1 / 3;
     display: grid;
     grid-template-columns: 25% 75%;
     background-color: #000;
@@ -63,6 +70,31 @@ ul{
 
 .social-icon{
     filter: invert(100%);
+}
+
+/* MAIN */
+
+.section-categorys{
+    grid-column: 1;
+}
+
+.categorys-list{
+    list-style: none;
+}
+.categorys-list li{
+    text-align: center;
+    padding: 1rem;
+    background-color: #FAFAFA;
+    box-shadow: 5px 10px #888888;
+    border: 1px solid;
+}
+
+.category-title{
+    text-align: center;
+    font-size: 1.5em;
+    background-color: #000;
+    color: #FAFAFA;
+    padding: 1.2rem;
 }
 
 #productsList{

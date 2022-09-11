@@ -154,7 +154,7 @@ function deleteProductOfCart(product){
 
 // Funcion inicializadora de productos disponibles
 const initializeProducts = async () =>{
-    const resp = await fetch(urlJson)
+    const resp = await fetch(urlProductsJson)
     let data = await resp.json()
     productsArray = data.map(product => new Product(product));
     console.log(productsArray)
@@ -204,7 +204,7 @@ const productsSearchBtn = document.getElementById("ProductsSearchBtn")
 const productsListTitle = document.getElementById("productsListTitle")
 
 //url con path relativo al json, donde se encuentran cargados todos los productos
-const urlJson = './js/db.json'
+const urlProductsJson = './js/products.json'
 
 // Se inicializa acumulador de carrito
 let totalCost = 0
