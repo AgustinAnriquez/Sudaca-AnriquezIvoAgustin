@@ -1,6 +1,46 @@
 [
     {
         "id": 1,
-        "name": "Vaso termico"
+        "name": "Art. Para concencionarias"
+    },
+    {
+        "id": 2,
+        "name": "Pins e identificadores"
+    },
+    {
+        "id": 3,
+        "name": "Llaveros"
+    },
+    {
+        "id": 4,
+        "name": "Boligrafos"
+    },
+    {
+        "id": 5,
+        "name": "Escritorio"
+    },
+    {
+        "id": 6,
+        "name": "Gastronomia"
+    },
+    {
+        "id": 7,
+        "name": "Tecnologia"
+    },
+    {
+        "id": 8,
+        "name": "Mochilas bolsos y marroquineria"
+    },
+    {
+        "id": 9,
+        "name": "Herramientas y outdoor"
+    },
+    {
+        "id": 10,
+        "name": "Indumentaria"
+    },
+    {
+        "id": 11,
+        "name": "Paraguas"
     }
 ]
