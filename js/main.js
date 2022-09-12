@@ -154,11 +154,8 @@ function deleteProductOfCart(product){
 
 // Funcion inicializadora de productos disponibles
 const initializeProducts = async () =>{
-    const resp = await fetch(urlProductsJson)
-    let data = await resp.json()
+    const data = await initializeJson(urlProductsJson)
     productsArray = data.map(product => new Product(product));
-    console.log(productsArray)
-    console.log(data)
 }
 
 //Funcion que crea tarjetas para productos destacados y los muestra
@@ -189,10 +186,91 @@ const productsSearchFilter = async () =>{
     }
 
 }
+
+// Funcion inicializadora de jsons
+const initializeJson = async (url) =>{
+    const resp = await fetch(url)
+    let data = await resp.json()
+    return data
+}
+
+// Funcion inicializadora de categorias disponibles
+const initializeCategorys = async () =>{
+    const data = await initializeJson(urlCategorysJson)
+    categorysArray = data.map(category => new Category(category));
+}
+
+// Funcion inicializadora de subcategorias disponibles
+const initializeSubCategorys = async () =>{
+    const data = await initializeJson(urlSubCategorysJson)
+    SubCategorysArray = data.map(subCategory => new SubCategory(subCategory));
+}
+
+// Funcion para mostrar categorias disponibles en menu desplegable
+const viewCategorysList = async () =>{
+    await initializeCategorys()
+    for (category of categorysArray){
+        newCategoryInList(category)
+    }
+}
+
+// Funcion para crear elemento y añadirlo a menu desplegable de categorias
+function newCategoryInList(category){
+    const a = document.createElement("a")
+    a.textContent = category.name
+    a.href = "#"+category.name.replace(/\s+/g, '-')
+    a.id = "category_" + category.id
+    //const svg = document.createElement("img")
+    //svg.src = "img/svg/arrow-right-circle-fill.svg"
+    //a.appendChild(svg) 
+    categorysList.appendChild(a)
+}
+
+// Funcion para mostrar subcategorias disponibles en categoria que tenga subcategorias
+const viewSubcategorys = async () =>{
+    await initializeSubCategorys()
+    for (subCategory of SubCategorysArray){
+        newSubCategoryInCategory(subCategory)
+    }
+}
+
+function newSubCategoryInCategory(subCategory){
+    const a = document.getElementById("category_" + subCategory.id_category)
+    if (a.children.length > 0){
+        console.log("ya tiene imagen")
+        const ul = document.createElement("ul")
+        const li = document.createElement("li")
+        const aSub = document.createElement("a")
+        aSub.textContent = subCategory.name
+        aSub.href = "#"+subCategory.name.replace(/\s+/g, '-')
+        li.appendChild(aSub)
+        ul.appendChild(li)
+        a.appendChild(ul)
+    }else{
+        const svg = document.createElement("img")
+        svg.src = "img/svg/arrow-right-circle-fill.svg"
+        a.appendChild(svg)
+        const ul = document.createElement("ul")
+        const li = document.createElement("li")
+        const aSub = document.createElement("a")
+        aSub.textContent = subCategory.name
+        aSub.href = "#"+subCategory.name.replace(/\s+/g, '-')
+        li.appendChild(aSub)
+        ul.appendChild(li)
+        a.appendChild(ul) 
+    }  
+}
+
 // Variables globales
 
 // Arreglo en el que se guardaran todos los productos disponibles, luego de recorrer json
 let productsArray
+
+// Se inicializa arreglo con las categorias disponibles 
+let categorysArray
+
+// Se inicializa arreglo con las subcategorias disponibles 
+let SubCategorysArray
 
 // Se crea variables con elementos del dom que se los modificara mas adelante
 
@@ -202,25 +280,40 @@ const productsList = document.getElementById("productsList")
 const productsSearch = document.getElementById("ProductsSearch")
 const productsSearchBtn = document.getElementById("ProductsSearchBtn")
 const productsListTitle = document.getElementById("productsListTitle")
+const categorysList = document.getElementById("categorys-list")
+const categorysLink = document.getElementById("categorysLink")
 
 //url con path relativo al json, donde se encuentran cargados todos los productos
 const urlProductsJson = './js/products.json'
 
+//url con path relativo al json, donde se encuentran cargadas todas las categorias
+const urlCategorysJson = './js/categorys.json'
+
+//url con path relativo al json, donde se encuentran cargadas todas las subcategorias
+const urlSubCategorysJson = './js/subcategorys.json'
+
 // Se inicializa acumulador de carrito
 let totalCost = 0
-
-// Se inicializa y se llena arreglo con las categorias disponibles 
-const categorysArray = []
-categorysArray.push(new Category("Vasos"))
-categorysArray.push(new Category("Boligrafos"))
-categorysArray.push(new Category("Botellas"))
-categorysArray.push(new Category("Llaveros"))
-categorysArray.push(new Category("Escritorio"))
 
 //Main
 
 // Se muestran productos destacados
 viewFeaturedProducts()
+
+// Se muestran categorias disponibles
+viewCategorysList()
+
+viewSubcategorys()
+
+// Se agrega evento de click a menu desplegable de categorias
+categorysLink.addEventListener('click', ()=>{
+    if (categorysList.style.display === "none"){
+        categorysList.style.display = "block";
+    }else{
+        categorysList.style.display = "none";
+    }
+}   
+)
 
 // Se agrega evento para que cada vez que se actualice la pagina se rellene arreglo del carrito con lo guardado en el localStorage 
 document.addEventListener('DOMContentLoaded', ()=>{

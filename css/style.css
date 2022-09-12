@@ -81,20 +81,38 @@ ul, h3{
 .categorys-list{
     list-style: none;
 }
-.categorys-list li{
+.categorys-list a{
     text-align: center;
-    padding: 1rem;
+    padding: 1rem 0;
     background-color: #FAFAFA;
     box-shadow: 5px 10px #888888;
     border: 1px solid;
+    display: block;
+    text-decoration: none;
+    color: #000;
+}
+
+.categorys-list img{
+    margin-left: 1rem;
 }
 
 .category-title{
     text-align: center;
     font-size: 1.5em;
     background-color: #000;
+    border: 0;
+    box-shadow: 5px 10px #888888;
+}
+
+.category-title a{
+    text-decoration: none;
     color: #FAFAFA;
-    padding: 1.2rem;
+    display: block;
+    padding: 1.2rem 0;
+}
+
+.categoryArrow{
+    filter: invert(100%);
 }
 
 #productsList{
