@@ -41,12 +41,12 @@
     },
     {
         "id": 9,
-        "id_category": 4,
+        "id_category": 7,
         "name": "Metalicos"
     },
     {
         "id": 10,
-        "id_category": 4,
+        "id_category": 7,
         "name": "Plasticos"
     },
     {
@@ -96,7 +96,7 @@
     },
     {
         "id": 20,
-        "id_category": 7,
+        "id_category": 10,
         "name": "Pendrive"
     },
     {
@@ -111,32 +111,32 @@
     },
     {
         "id": 23,
-        "id_category": 10,
+        "id_category": 4,
         "name": "Buzos, chalecos y camperas"
     },
     {
         "id": 24,
-        "id_category": 10,
+        "id_category": 4,
         "name": "Camisas"
     },
     {
         "id": 25,
-        "id_category": 10,
+        "id_category": 4,
         "name": "Chombas"
     },
     {
         "id": 26,
-        "id_category": 10,
+        "id_category": 4,
         "name": "Remeras"
     },
     {
         "id": 27,
-        "id_category": 10,
+        "id_category": 4,
         "name": "Banderas"
     },
     {
         "id": 28,
-        "id_category": 10,
+        "id_category": 4,
         "name": "Gorros"
     }
 

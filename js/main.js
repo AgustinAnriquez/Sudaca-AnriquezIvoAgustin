@@ -162,7 +162,7 @@ const initializeProducts = async () =>{
 const viewFeaturedProducts = async () =>{
     await initializeProducts()
     productsList.innerHTML = ''
-    productsListTitle.textContent = "Productos Destacados"
+    productsListTitle.textContent = "Algunos de nuestros trabajos"
     const featuredProducts = productsArray.filter((product) => product.featured == "S")
     for (product of featuredProducts){
         createProductCard(product)
@@ -219,10 +219,7 @@ function newCategoryInList(category){
     const a = document.createElement("a")
     a.textContent = category.name
     a.href = "#"+category.name.replace(/\s+/g, '-')
-    a.id = "category_" + category.id
-    //const svg = document.createElement("img")
-    //svg.src = "img/svg/arrow-right-circle-fill.svg"
-    //a.appendChild(svg) 
+    a.id = "category_" + category.id 
     categorysList.appendChild(a)
 }
 
@@ -238,27 +235,36 @@ function newSubCategoryInCategory(subCategory){
     const a = document.getElementById("category_" + subCategory.id_category)
     if (a.children.length > 0){
         console.log("ya tiene imagen")
-        const ul = document.createElement("ul")
-        const li = document.createElement("li")
-        const aSub = document.createElement("a")
-        aSub.textContent = subCategory.name
-        aSub.href = "#"+subCategory.name.replace(/\s+/g, '-')
-        li.appendChild(aSub)
+        const ul = document.getElementById("list_" + subCategory.id_category)
+        const li = addSubCategoryInCategory(subCategory)
         ul.appendChild(li)
-        a.appendChild(ul)
     }else{
         const svg = document.createElement("img")
         svg.src = "img/svg/arrow-right-circle-fill.svg"
         a.appendChild(svg)
         const ul = document.createElement("ul")
-        const li = document.createElement("li")
-        const aSub = document.createElement("a")
-        aSub.textContent = subCategory.name
-        aSub.href = "#"+subCategory.name.replace(/\s+/g, '-')
-        li.appendChild(aSub)
+        ul.id = "list_" + subCategory.id_category
+        const li = addSubCategoryInCategory(subCategory)
         ul.appendChild(li)
         a.appendChild(ul) 
-    }  
+    } 
+    const ul = document.getElementById("list_" + subCategory.id_category)
+    a.addEventListener('mouseover', ()=>{
+        ul.style.display = "block";
+        
+    })
+    a.addEventListener('mouseout', ()=>{
+        ul.style.display = "none";
+    })
+}
+
+function addSubCategoryInCategory(subCategory){
+    const li = document.createElement("li")
+    const a = document.createElement("a")
+    a.textContent = subCategory.name
+    a.href = "#"+subCategory.name.replace(/\s+/g, '-')
+    li.appendChild(a)
+    return li
 }
 
 // Variables globales
