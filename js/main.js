@@ -27,7 +27,7 @@ function createProductCard(product){
 // Se modifica costo total del carrito
 function modifyTotalCost(productCost){
     totalCost = totalCost + productCost
-    totalCost > 0 ? buyProducts.textContent = "Costo total: $" + totalCost : buyProducts.textContent ="No hay productos en el carrito" 
+    totalCost > 0 ? buyProducts.style.display = "none" : buyProducts.style.display = "block" 
 }
 
 // Mensaje para confirmar adhesion de producto al carrito
@@ -51,23 +51,71 @@ function confirmMessage(ProductName, product, cost){
 
 // Creacion de nuevo elemento en la lista de producto en el carrito
 function newItemInCart(product){
-    // Se crea elemento con su nombre, costo por unidad y cantidad seleccionada
-    const li = document.createElement("li")
-    const span = document.createElement("span")
-    span.textContent = product.name + " $" + product.cost + " x" + product.quantity
-    span.setAttribute("id", "id_" + product.id)
+
+    //se crea lista por cada producto que se añada al carrito
+    const ul = document.createElement("ul")
+
+    // Se crea elemento con su imagen
+
+    const liImg = document.createElement("li")
+    liImg.classList.add("productsBuyList-img")
+    const img = document.createElement("img")
+    img.src = product.image
+    liImg.appendChild(img)
+
+    // Se crea elemento con su titulo
+
+    const liProduct = document.createElement("li")
+    liProduct.classList.add("productsBuyList-li")
+    const spanProductTitle = document.createElement("span")
+    spanProductTitle.textContent = "Producto"
+    liProduct.appendChild(spanProductTitle)
+    const spanProductName= document.createElement("span")
+    spanProductName.textContent = product.name
+    spanProductName.classList.add("m-auto")
+    liProduct.appendChild(spanProductName)
+
+    // Se crea elemento con su cantidad
+
+    const liQuantity = document.createElement("li")
+    liQuantity.classList.add("productsBuyList-li")
+    const spanTitleQuantity = document.createElement("span")
+    spanTitleQuantity.textContent = "Cantidad"
+    liQuantity.appendChild(spanTitleQuantity)
+    const spanQuantity = document.createElement("span")
+    spanQuantity.textContent = product.quantity
+    spanQuantity.classList.add("m-auto")
+    spanQuantity.setAttribute("id", "quantityId_" + product.id)
+    liQuantity.appendChild(spanQuantity)
+
+    // Se crea elemento con boton para quitar elemento de carrito
+
+    const liButton = document.createElement("li")
+    liButton.classList.add("productsBuyList-li")
+    const spanTitleButton = document.createElement("span")
+    spanTitleButton.textContent = "Quitar producto"
+    liButton.appendChild(spanTitleButton)
     const buttonRemove = document.createElement("button")
-    buttonRemove.classList.add("btn", "btn-danger")
+    buttonRemove.classList.add("btn", "btn-danger", "m-auto")
     buttonRemove.textContent = "Quitar"
-    li.appendChild(span)
-    li.appendChild(buttonRemove)
-    productsBuyList.appendChild(li)
+    liButton.appendChild(buttonRemove)
+
+    // Se añaden elementos a lista de compra
+
+    ul.appendChild(liImg)
+    ul.appendChild(liProduct)
+    ul.appendChild(liQuantity)
+    ul.appendChild(liButton)
+    ul.classList.add("productsBuyList")
+    cartList.appendChild(ul)
+
+
     // Se añade evento al elemento, boton "delete", cuando se hace click en el se borra el elemento o se modifica cantidad en caso de que haya agregado mas de un elemento en el carrito 
     buttonRemove.onclick = function(){
         // Se modifica costo total del carrito, se envia costo en negativo, debido que se elimino el producto del carrito
         modifyTotalCost(-(product.cost))
         // Si se elimino la totalidad del mismo producto, se lo elimina de la lista
-        deleteProductOfCart(product) && productsBuyList.removeChild(li)
+        deleteProductOfCart(product) && cartList.removeChild(ul)
         Toastify({
 
             text: "Se ha eliminado producto del carrito",
@@ -116,8 +164,8 @@ function saveCart(){
 
 // Se modifica en DOM del carrito la cantidad del producto en el mismo
 function modifyQuantityOfProduct(product){
-    let spanOfProduct = document.getElementById("id_" + product.id)
-    spanOfProduct.textContent = product.name + " $" + product.cost + " x" + product.quantity
+    let spanOfProductQuantity = document.getElementById("quantityId_" + product.id)
+    spanOfProductQuantity.textContent = product.quantity
 }
 
 // Funcion encargada de modificar cantidad de producto o eliminarlo del carrito, retorna una bandera que indica si el producto fue eliminado del carrito
@@ -161,12 +209,9 @@ const initializeProducts = async () =>{
 //Funcion que crea tarjetas para productos destacados y los muestra
 const viewFeaturedProducts = async () =>{
     await initializeProducts()
-    productsList.innerHTML = ''
-    productsListTitle.textContent = "Algunos de nuestros trabajos"
+    const title = "Algunos de nuestros trabajos"
     const featuredProducts = productsArray.filter((product) => product.featured == "S")
-    for (product of featuredProducts){
-        createProductCard(product)
-    }
+    loadHome(featuredProducts, title)
 }
 
 //Funcion para filtrar elementos con buscador
@@ -182,7 +227,7 @@ const productsSearchFilter = async () =>{
         }
     }
     if (productsList.innerHTML == ''){
-        productsListTitle.textContent = "No se encontro nada"
+        productsListTitle.textContent = "No se encontraron resultados"
     }
 
 }
@@ -221,6 +266,11 @@ function newCategoryInList(category){
     a.href = "#"+category.name.replace(/\s+/g, '-')
     a.id = "category_" + category.id 
     categorysList.appendChild(a)
+    a.addEventListener('click', ()=>{
+        const categoryProducts = productsArray.filter((product) => product.id_category == category.id)
+        loadHome(categoryProducts, category.name)
+    }   
+    )
 }
 
 // Funcion para mostrar subcategorias disponibles en categoria que tenga subcategorias
@@ -231,10 +281,10 @@ const viewSubcategorys = async () =>{
     }
 }
 
+//Se añade subcategoria en categoria correspondiente 
 function newSubCategoryInCategory(subCategory){
     const a = document.getElementById("category_" + subCategory.id_category)
     if (a.children.length > 0){
-        console.log("ya tiene imagen")
         const ul = document.getElementById("list_" + subCategory.id_category)
         const li = addSubCategoryInCategory(subCategory)
         ul.appendChild(li)
@@ -258,16 +308,32 @@ function newSubCategoryInCategory(subCategory){
     })
 }
 
+// Se crean elementos necesarios para cada elemento de subcategoria
 function addSubCategoryInCategory(subCategory){
     const li = document.createElement("li")
     const a = document.createElement("a")
     a.textContent = subCategory.name
     a.href = "#"+subCategory.name.replace(/\s+/g, '-')
+    a.id = "subcategory_" + subCategory.id
     li.appendChild(a)
+    a.addEventListener('click', (e)=>{
+        e.stopPropagation()
+        const subCategoryProducts = productsArray.filter((product) => product.id_subCategory == subCategory.id)
+        loadHome(subCategoryProducts, subCategory.name)
+    })  
     return li
 }
 
-// Variables globales
+function loadHome(productsArray, title){
+    cartList.style.display = "none"
+    productsList.innerHTML = ''
+    productsListTitle.textContent = title
+    for (product of productsArray){
+        createProductCard(product)
+    }
+}
+
+/* -------------------------------------------------VARIABLES GLOBALES-------------------------------------------------------- */
 
 // Arreglo en el que se guardaran todos los productos disponibles, luego de recorrer json
 let productsArray
@@ -281,13 +347,15 @@ let SubCategorysArray
 // Se crea variables con elementos del dom que se los modificara mas adelante
 
 const buyProducts = document.getElementById("buyProducts")
-const productsBuyList = document.getElementById("productsBuyList")
+const cartList = document.getElementById("cart")
 const productsList = document.getElementById("productsList")
 const productsSearch = document.getElementById("ProductsSearch")
 const productsSearchBtn = document.getElementById("ProductsSearchBtn")
 const productsListTitle = document.getElementById("productsListTitle")
 const categorysList = document.getElementById("categorys-list")
 const categorysLink = document.getElementById("categorysLink")
+const HomeLogo = document.getElementById("HomeLogo")
+const cartSolitud = document.getElementById("cartSolitud")
 
 //url con path relativo al json, donde se encuentran cargados todos los productos
 const urlProductsJson = './js/products.json'
@@ -301,15 +369,8 @@ const urlSubCategorysJson = './js/subcategorys.json'
 // Se inicializa acumulador de carrito
 let totalCost = 0
 
-//Main
 
-// Se muestran productos destacados
-viewFeaturedProducts()
-
-// Se muestran categorias disponibles
-viewCategorysList()
-
-viewSubcategorys()
+/* ------------------------------------------------------EVENTOS--------------------------------------------------------------- */
 
 // Se agrega evento de click a menu desplegable de categorias
 categorysLink.addEventListener('click', ()=>{
@@ -330,6 +391,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
         // se modifica costo total de carrito en base a los productos cargados en el localStorage y la cantidad de los mismos
         modifyTotalCost(product.cost * product.quantity)
     }
+    // Se muestran productos destacados
+    viewFeaturedProducts()
+    // Se muestran categorias disponibles
+    viewCategorysList()
+    // Se muestran subcategorias disponibles
+    viewSubcategorys()
 })
 
 productsSearchBtn.addEventListener('click', productsSearchFilter)
@@ -339,3 +406,14 @@ productsSearch.addEventListener('keypress', function (e) {
     }
 });
 
+HomeLogo.addEventListener('click', ()=>{
+    // Se muestran productos destacados
+    viewFeaturedProducts()
+    // Se oculta carrito
+})
+
+cartSolitud.addEventListener('click', ()=>{
+    cartList.style.display = "flex"
+    productsList.innerHTML = ''
+    productsListTitle.innerHTML = ''
+})

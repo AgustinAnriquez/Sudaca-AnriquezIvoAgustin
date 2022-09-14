@@ -15,7 +15,7 @@
 <body id="body">
     <header class="header">
         <div class="header-logo">
-            <a href="#Inicio"><img src="./img/logo/sudacaLogo.svg" alt="sudaca"></a>
+            <a href="#Inicio" id="HomeLogo"><img src="./img/logo/sudacaLogo.svg" alt="sudaca"></a>
         </div>
         <div class="header-nav">
             <div class="header-nav-top">
@@ -30,7 +30,7 @@
                     <li><input id="ProductsSearch" type="search" placeholder="Buscar un producto" aria-label="Search">
                         <button id="ProductsSearchBtn" type="submit"><img src="./img/svg/search.svg" alt=""></button>                  
                     </li>
-                    <li><a href="#cart">Solicita tu presupuesto</a></li>
+                    <li><a href="#cart" id="cartSolitud">Solicita tu presupuesto</a></li>
                     <li><a href=""><img src="./img/svg/facebook.svg" class="social-icon" alt="facebook"></a>
                         <a href=""><img src="./img/svg/instagram.svg" class="social-icon" alt="instagram"></a> 
                         <a href="#Contact">Contacto</a>
@@ -47,15 +47,12 @@
         </ul>
     </section>
     <section class="section-products">
-        <article id="cart" class="text-center">
-            <h2>Carrito de compra</h2>
+        <article id="cart" class="text-center container">
+            <h3 class="text-center p-3">Solicitud de presupuesto</h2>
 
-            <ul id="productsBuyList">
-                        
-            </ul>
-            <strong id="buyProducts">No hay productos en el carrito</strong>
+            <strong id="buyProducts">No hay productos en la lista</strong>
         </article>
-        <h3 class="text-center" id="productsListTitle"></h3>
+        <h3 class="text-center p-3" id="productsListTitle"></h3>
         <article id="productsList">
 
         </article>

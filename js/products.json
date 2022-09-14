@@ -3,7 +3,8 @@
         "id": 1,
         "name": "Vaso termico",
         "cost": 10,
-        "category": "Vasos",
+        "id_category": 6,
+        "id_subCategory": 15,
         "image": "/img/vasoTermico.png",
         "quantity": 1,
         "featured":"S"
@@ -12,7 +13,8 @@
         "id": 2,
         "name": "Anotador",
         "cost": 8,
-        "category": "Escritorio",
+        "id_category": 5,
+        "id_subCategory": 11,
         "image": "/img/anotador.png",
         "quantity": 1,
         "featured":"S"
@@ -22,7 +24,8 @@
         "id": 3,
         "name": "Boligrafo",
         "cost": 4,
-        "category": "Boligrafos",
+        "id_category": 7,
+        "id_subCategory": 10,
         "image": "/img/boligrafo.jpg",
         "quantity": 1,
         "featured":"S"  
@@ -31,7 +34,8 @@
         "id": 4,
         "name": "Llavero",
         "cost": 2,
-        "category": "Llaveros",
+        "id_category": 3,
+        "id_subCategory": 6,
         "image": "/img/llavero.png",
         "quantity": 1,
         "featured":"N"  
@@ -40,7 +44,8 @@
         "id": 5,
         "name": "Llavero",
         "cost": 2,
-        "category": "Llaveros",
+        "id_category": 3,
+        "id_subCategory": 6,
         "image": "/img/llavero.png",
         "quantity": 1,
         "featured":"N"  
