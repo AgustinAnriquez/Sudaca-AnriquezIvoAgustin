@@ -12,7 +12,7 @@
     <title>Sudaca | Personaliza tu mundo</title>
     <script src="https://kit.fontawesome.com/a5beb9ea4b.js" crossorigin="anonymous"></script>
 </head>
-<body id="body">
+<body id="body" class="container-fluid">
     <header class="header">
         <div class="header-logo">
             <a href="#Inicio" id="HomeLogo"><img src="./img/logo/sudacaLogo.svg" alt="sudaca"></a>
@@ -30,7 +30,7 @@
                     <li><input id="ProductsSearch" type="search" placeholder="Buscar un producto" aria-label="Search">
                         <button id="ProductsSearchBtn" type="submit"><img src="./img/svg/search.svg" alt=""></button>                  
                     </li>
-                    <li><a href="#cart" id="cartSolitud">Solicita tu presupuesto</a></li>
+                    <li><a href="#cart" id="cartRequest">Solicita tu presupuesto</a></li>
                     <li><a href="https://www.facebook.com/sudacashop"><img src="./img/svg/facebook.svg" class="social-icon" alt="facebook"></a>
                         <a href="https://www.instagram.com/sudacagrafica/"><img src="./img/svg/instagram.svg" class="social-icon" alt="instagram"></a> 
                         <a href="#Contact">Contacto</a>
@@ -53,8 +53,35 @@
             <strong id="buyProducts">No hay productos en la lista</strong>
         </article>
         <h3 class="text-center p-3" id="productsListTitle"></h3>
-        <article id="productsList">
+        <article id="productsList" class="container">
 
+        </article>
+        <article class="container" id="formRequest">
+            <h4 class="px-3">Enviar solicitud</h4>
+            <form class="p-3" id="form">
+                <div class="mb-3">
+                    <label class="form-label" for="name">Nombre</label>
+                    <input type="text" class="form-control" placeholder="Nombre" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="email">Correo electronico</label>
+                    <input type="email" class="form-control" placeholder="nombre@ejemplo.com" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Telefono</label>
+                    <input type="number" class="form-control" placeholder="3624000928" name="phone" required>
+                </div>
+                <div class="mb-3">
+                    <input type="text" name="information" class="formInformation" id="information">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mensaje</label>
+                    <textarea class="form-control"rows="3" placeholder="Notas de tu solicitud" name="message"></textarea>
+                </div>
+                <div class="col-12">
+                    <input type="submit" id="button" value="Enviar solicitud" >
+                </div>
+            </form>
         </article>
     </section>
     <footer>
@@ -70,5 +97,12 @@
     <script src="./js/Category.js"></script>
     <script src="./js/SubCategory.js"></script>
     <script src="./js/main.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+        emailjs.init('sitINz3xkJtDcdo31')
+    </script>
+    <script src="./js/emailJsScript.js"></script>
 </body>
 </html>

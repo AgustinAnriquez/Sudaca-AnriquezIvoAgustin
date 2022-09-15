@@ -19,7 +19,19 @@ function createProductCard(product){
     // Se agrega evento a cada tarjeta, por cada click a la tarjeta, se consultara si se desea agregar al carrito el producto
     containerProduct.onclick = function(){
         // En caso de confirmar la adhesion del producto al carrito se añade el producto al carrito(o se modifica cantidad del mismo), se modifica localStorage y se modifica costo total del carrito
-        confirmMessage(name, product, cost)
+        addItemInCart(product)
+        saveCart()
+        modifyTotalCost(cost)
+        Toastify({
+
+            text: "Se ha añadido producto al carrito",
+            className: "info",
+            duration: 3000,
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+              }
+            
+            }).showToast();
             
     }
 }
@@ -28,25 +40,6 @@ function createProductCard(product){
 function modifyTotalCost(productCost){
     totalCost = totalCost + productCost
     totalCost > 0 ? buyProducts.style.display = "none" : buyProducts.style.display = "block" 
-}
-
-// Mensaje para confirmar adhesion de producto al carrito
-function confirmMessage(ProductName, product, cost){
-    Swal.fire({
-        title: `Desea añadir ${ProductName} al carrito ?`,
-        showCancelButton: true,
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, añadirlo',
-        cancelButtonText: `Cancelar`,
-      }).then((result) => {
-        
-        if (result.isConfirmed) 
-        {
-            addItemInCart(product)
-            saveCart()
-            modifyTotalCost(cost)
-        }          
-      }) 
 }
 
 // Creacion de nuevo elemento en la lista de producto en el carrito
@@ -115,14 +108,20 @@ function newItemInCart(product){
         // Se modifica costo total del carrito, se envia costo en negativo, debido que se elimino el producto del carrito
         modifyTotalCost(-(product.cost))
         // Si se elimino la totalidad del mismo producto, se lo elimina de la lista
-        deleteProductOfCart(product) && cartList.removeChild(ul)
+        if (deleteProductOfCart(product)){
+            cartList.removeChild(ul)
+            if (productsInCart.length ===0){
+                formRequest.style.display = "none" 
+            }
+        }
+
         Toastify({
 
             text: "Se ha eliminado producto del carrito",
             className: "info",
             duration: 3000,
             style: {
-                background: "linear-gradient(to right, #00b09b, #96c93d)",
+                background: "linear-gradient(to right, #d63333, #fc2105)",
               }
             
             }).showToast();
@@ -325,6 +324,7 @@ function addSubCategoryInCategory(subCategory){
 }
 
 function loadHome(productsArray, title){
+    formRequest.style.display = "none"
     cartList.style.display = "none"
     productsList.innerHTML = ''
     productsListTitle.textContent = title
@@ -355,7 +355,9 @@ const productsListTitle = document.getElementById("productsListTitle")
 const categorysList = document.getElementById("categorys-list")
 const categorysLink = document.getElementById("categorysLink")
 const HomeLogo = document.getElementById("HomeLogo")
-const cartSolitud = document.getElementById("cartSolitud")
+const cartRequest= document.getElementById("cartRequest")
+const formRequest = document.getElementById("formRequest")
+const formInformation = document.getElementById("information")
 
 //url con path relativo al json, donde se encuentran cargados todos los productos
 const urlProductsJson = './js/products.json'
@@ -374,11 +376,7 @@ let totalCost = 0
 
 // Se agrega evento de click a menu desplegable de categorias
 categorysLink.addEventListener('click', ()=>{
-    if (categorysList.style.display === "none"){
-        categorysList.style.display = "block";
-    }else{
-        categorysList.style.display = "none";
-    }
+    categorysList.style.display === "none" ? categorysList.style.display = "block" : categorysList.style.display = "none"
 }   
 )
 
@@ -412,8 +410,18 @@ HomeLogo.addEventListener('click', ()=>{
     // Se oculta carrito
 })
 
-cartSolitud.addEventListener('click', ()=>{
+cartRequest.addEventListener('click', ()=>{
     cartList.style.display = "flex"
     productsList.innerHTML = ''
     productsListTitle.innerHTML = ''
+    if (productsInCart.length === 0 ){
+        formRequest.style.display = "none" 
+    }else{
+        formRequest.style.display = "block"
+        formInformation.value =''
+        for(product of productsInCart){
+            formInformation.value +=" producto: " + product.name + " cantidad: " + product.quantity + "/"
+        }
+        console.log(formInformation.value)
+    } 
 })
