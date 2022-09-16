@@ -32,6 +32,11 @@ ul{
     grid-column: 1;
     justify-self: center;
 }
+
+.header-logo img{
+    width: 100%;
+}
+
 .header-nav{
     grid-column: 2;
     background: linear-gradient(to bottom, #FAFAFA 0%, #FAFAFA 30%, #000 30%, #000 100%);
@@ -76,6 +81,7 @@ ul{
 .social-icon{
     filter: invert(100%);
 }
+
 
 /* MAIN */
 
@@ -136,6 +142,10 @@ ul{
     grid-template-columns: 1fr 1fr 1fr ;
     gap: 3%;
     padding: 1rem;
+}
+
+#productsList h3{
+    font-size: 1.3em;
 }
 
 #productsList div{
@@ -215,6 +225,39 @@ ul{
     display: none;
 }
 
+/* Seccion descripcion de producto */
+
+#productDescription{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#productDescription img{
+    width: 60%;
+    object-fit: cover;
+    box-shadow: 5px 10px #888888;
+}
+
+#productDescription button{
+    box-shadow: 5px 5px #888888;
+    background-color: #f39301;
+    margin: 1rem;
+    padding: 0.2rem;
+}
+
+#productDescription button:hover{
+    background-color: #f3b201ee;
+}
+
+#productDescription div{
+    margin: 1rem;
+}
+#productDescription div p, h3{
+    margin: 1rem;
+}
+
+
 /* FOOTER */
 footer{
     box-shadow: 5px 10px #888888;
@@ -224,10 +267,207 @@ footer{
     display: flex;
     justify-content: center;
     padding: 1rem;
+    margin-top: 3rem;
 }
 
 @media (max-width: 1200px) {
     .categorys-list a ul{
         left: 200px;
     }
+
+    #productDescription div h3 {
+        font-size: 1.3em;
+        margin: 0.5rem;
+    }
+
+    #productDescription div p {
+        font-size: 1.1em;
+        margin: 0.5rem;
+    }
+
+    #productDescription div button {
+        font-size: 0.9em;
+        margin: 0.5rem;
+    }
+
+
   }
+
+@media (max-width: 900px) {
+    .header-nav{
+        grid-column: 2;
+        background: linear-gradient(to bottom, #FAFAFA 0%, #FAFAFA 45%, #000 45%, #000 100%);
+        display: flex;
+        flex-direction: column;
+    }
+    .header-nav-bottom{
+        padding-top: 0.6rem;
+    }
+
+    .header-nav-list{
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #productDescription{
+        flex-direction: column;
+    }
+    #productDescription img{
+        text-align: start;
+    }
+
+    #productDescription div h3 {
+        text-align: center;
+    }
+
+    #productDescription div p {
+        text-align: start;
+    }
+
+    #productDescription div button {
+        text-align: center;
+    }
+
+
+  }
+
+@media (max-width: 800px) {
+    #productsList{
+        grid-template-columns: 1fr;
+    }
+    #productsList div{
+        width: 300px;
+        margin: auto;  
+    }
+
+    .categorys-list a ul{
+        left: 100px;
+    }
+    .productsBuyList{
+        flex-direction: column;
+        margin: 0.5rem;
+    }
+
+    #cart h3{
+        padding: 0.5rem !important;
+        margin: 0.5rem !important;
+    }
+
+    .productsBuyList-img img{
+        width: 50%;
+    }
+
+    .productsBuyList li{
+        margin: 0;
+    }
+
+}
+
+@media (max-width: 800px){
+    .productsBuyList-img img{
+        width: 70%;
+    }
+}
+
+@media (max-width: 500px) {
+
+    #productsList div{
+        width: 200px;
+    }
+
+    .category-title{
+        font-size: 1em;
+    }
+
+    .categorys-list a{
+        font-size: 0.7em;
+    }
+    .header-nav{
+        font-size: 0.7em;
+        padding: 0.5rem;
+    }
+    #productsListTitle{
+        font-size: 1.3em;
+    }
+    #productsList h3{
+        font-size: 1em;
+    }
+
+    #productsList div p{
+        font-size: 1em;
+    }
+
+    #productDescription img{
+        width: 80%;
+    }
+
+    #productDescription div h3 {
+        font-size: 1.3em;
+    }
+
+    #productDescription div p {
+        font-size: 0.8em;
+    }
+
+    #productDescription div button {
+        font-size: 0.8em;
+    }
+
+    #cart h3{
+        font-size: 1.2em;
+    }
+
+    .productsBuyList{
+        font-size: 1em;
+    }
+
+    .productsBuyList-img img{
+        width: 100%;
+    }
+
+    footer {
+        font-size: 0.8em;
+    }
+
+}
+
+@media (max-width: 400px) {
+    .categorys-list a ul{
+        left: 50px;
+    }
+}
+
+@media (max-width: 350px){
+
+
+    #productsListTitle{
+        font-size: 1em;
+    }
+
+    #productsList h3{
+        font-size: 0.8em;
+    }
+
+    #productsList{
+        padding: 0.8rem;
+    }
+
+    #productsList div{
+        width: 150px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .category-title{
+        font-size: 0.7em;
+    }
+
+    #body{
+        grid-template-columns: 35% 65%;
+    }
+
+    .categorys-list img, .category-title img{
+        width: 10px;
+    }
+
+}

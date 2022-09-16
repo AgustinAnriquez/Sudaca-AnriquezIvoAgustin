@@ -7,7 +7,7 @@ function createProductCard(product){
     const title = document.createElement("h3")
     const img = document.createElement("img")
     const p = document.createElement("p")
-    const{name, cost, image} = product
+    const{name, image} = product
 
     // Se rellenan elementos de la tarjeta
     p.textContent = "Ver detalles"
@@ -17,23 +17,9 @@ function createProductCard(product){
     containerProduct.appendChild(title)
     containerProduct.appendChild(p)
     productsList.appendChild(containerProduct)
-    // Se agrega evento a cada tarjeta, por cada click a la tarjeta, se consultara si se desea agregar al carrito el producto
+    // Se agrega evento a cada tarjeta, por cada click a la tarjeta, se enviara a pantalla de descripcion del producto
     containerProduct.onclick = function(){
-        // En caso de confirmar la adhesion del producto al carrito se añade el producto al carrito(o se modifica cantidad del mismo), se modifica localStorage y se modifica costo total del carrito
-        addItemInCart(product)
-        saveCart()
-        modifyTotalCost(cost)
-        Toastify({
-
-            text: "Se ha añadido producto al carrito",
-            className: "info",
-            duration: 3000,
-            style: {
-                background: "linear-gradient(to right, #00b09b, #96c93d)",
-              }
-            
-            }).showToast();
-            
+        ViewProductDescription(product)      
     }
 
     containerProduct.addEventListener('mouseover', ()=>{
@@ -47,6 +33,48 @@ function createProductCard(product){
         title.style.opacity = 1;
     })
 
+}
+
+function ViewProductDescription(product){
+    productsListTitle.innerHTML = ''
+    productsList.innerHTML = ''
+    const img = document.createElement("img")
+    img.src = product.image
+    const div = document.createElement("div")
+    const h3 =document.createElement("h3")
+    h3.textContent = product.name
+    const button = document.createElement("button")
+    button.textContent = "Añadir al presupuesto"
+    const pCategory =document.createElement("p")
+    const productCategory = categorysArray.find((category) => product.id_category == category.id)
+    pCategory.textContent = "Categoria: " + productCategory.name
+    const pSubCategory =document.createElement("p")
+    const productSubCategory = SubCategorysArray.find((subCategory) => product.id_subCategory == subCategory.id)
+    pSubCategory.textContent = "Sub categoria: " + productSubCategory.name
+    div.appendChild(h3)
+    div.appendChild(button)
+    div.appendChild(pCategory)
+    div.appendChild(pSubCategory)
+    containerProductDescription.appendChild(img)
+    containerProductDescription.appendChild(div)
+    // Se agrega evento a boton, por cada click, se agregara al carrito el producto
+    button.onclick = function(){
+        // En caso de confirmar la adhesion del producto al carrito se añade el producto al carrito(o se modifica cantidad del mismo), se modifica localStorage y se modifica costo total del carrito
+        addItemInCart(product)
+        saveCart()
+        modifyTotalCost(product.cost)
+        Toastify({
+
+            text: "Se ha añadido producto al carrito",
+            className: "info",
+            duration: 3000,
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+              }
+            
+            }).showToast();
+            
+    }
 }
 
 // Se modifica costo total del carrito
@@ -127,9 +155,8 @@ function newItemInCart(product){
                 formRequest.style.display = "none" 
             }
         }
-
+        console.log("se ejecuta")
         Toastify({
-
             text: "Se ha eliminado producto del carrito",
             className: "info",
             duration: 3000,
@@ -229,6 +256,9 @@ const viewFeaturedProducts = async () =>{
 //Funcion para filtrar elementos con buscador
 const productsSearchFilter = async () =>{
     await initializeProducts()
+    containerProductDescription.innerHTML =''
+    formRequest.style.display = "none"
+    cartList.style.display = "none"
     productsList.innerHTML = ''
     const productsSearchText = productsSearch.value.toLowerCase()
     for(let product of productsArray){
@@ -337,6 +367,7 @@ function addSubCategoryInCategory(subCategory){
 }
 
 function loadHome(productsArray, title){
+    containerProductDescription.innerHTML =''
     formRequest.style.display = "none"
     cartList.style.display = "none"
     productsList.innerHTML = ''
@@ -371,6 +402,7 @@ const HomeLogo = document.getElementById("HomeLogo")
 const cartRequest= document.getElementById("cartRequest")
 const formRequest = document.getElementById("formRequest")
 const formInformation = document.getElementById("information")
+const containerProductDescription = document.getElementById("productDescription")
 
 //url con path relativo al json, donde se encuentran cargados todos los productos
 const urlProductsJson = './js/products.json'
@@ -424,6 +456,7 @@ HomeLogo.addEventListener('click', ()=>{
 })
 
 cartRequest.addEventListener('click', ()=>{
+    containerProductDescription.innerHTML =''
     cartList.style.display = "flex"
     productsList.innerHTML = ''
     productsListTitle.innerHTML = ''
@@ -433,7 +466,7 @@ cartRequest.addEventListener('click', ()=>{
         formRequest.style.display = "block"
         formInformation.value =''
         for(product of productsInCart){
-            formInformation.value +=" producto: " + product.name + " cantidad: " + product.quantity + "/"
+            formInformation.value +=product.name + " x " + product.quantity + "\n"
         }
         console.log(formInformation.value)
     } 
