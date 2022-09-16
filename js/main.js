@@ -6,15 +6,16 @@ function createProductCard(product){
     const containerProduct = document.createElement("div")
     const title = document.createElement("h3")
     const img = document.createElement("img")
-    const costProduct = document.createElement("p")
+    const p = document.createElement("p")
     const{name, cost, image} = product
+
     // Se rellenan elementos de la tarjeta
+    p.textContent = "Ver detalles"
     title.textContent = name
-    costProduct.textContent = "Precio: $"+ cost
     img.setAttribute("src", image)
-    containerProduct.appendChild(title)
     containerProduct.appendChild(img)
-    containerProduct.appendChild(costProduct)
+    containerProduct.appendChild(title)
+    containerProduct.appendChild(p)
     productsList.appendChild(containerProduct)
     // Se agrega evento a cada tarjeta, por cada click a la tarjeta, se consultara si se desea agregar al carrito el producto
     containerProduct.onclick = function(){
@@ -34,6 +35,18 @@ function createProductCard(product){
             }).showToast();
             
     }
+
+    containerProduct.addEventListener('mouseover', ()=>{
+        p.style.display = "block";
+        img.style.opacity = 0.5;
+        title.style.opacity = 0.5;
+    })
+    containerProduct.addEventListener('mouseout', ()=>{
+        p.style.display = "none";
+        img.style.opacity = 1;
+        title.style.opacity = 1;
+    })
+
 }
 
 // Se modifica costo total del carrito

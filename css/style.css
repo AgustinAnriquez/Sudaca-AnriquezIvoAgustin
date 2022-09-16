@@ -5,7 +5,7 @@
     box-sizing: border-box;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-ul, h3, p, h2, h4{
+ul, h3, p, h2, h4, article{
     margin:0;
     padding: 0;
 }
@@ -132,20 +132,30 @@ ul{
 /* seccion lista de productos */
 
 #productsList{
-    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr ;
+    gap: 3%;
+    padding: 1rem;
 }
+
 #productsList div{
-    font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     background-color: #fff;
-    border: 5px solid #000;
-    border-radius: 10px;
-    margin: 20px;
+    box-shadow: 5px 10px #888888;
+    padding: 0.3rem;
+    border-radius: 2%;
+    cursor: pointer;
 }
+#productsList div p{
+    text-decoration: underline;
+    color: #f39301;
+    font-size: 1.5em;
+    display: none;
+}
+
 #productsList div img{
-    width: 50%;
+    width: 65%;
+    border-radius: 2%;
 }
 
 
@@ -193,6 +203,12 @@ ul{
 
 #button{
     background-color: #f39301;
+    box-shadow: 5px 5px #888888;
+    border: 1px solid;
+}
+
+#button:hover{
+    background-color: #f3b201ee;
 }
 
 .formInformation{
